@@ -6,13 +6,13 @@
 /*   By: kid-bouh <kid-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 12:22:43 by kid-bouh          #+#    #+#             */
-/*   Updated: 2021/11/22 22:00:38 by kid-bouh         ###   ########.fr       */
+/*   Updated: 2021/11/23 18:45:32 by kid-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int ft_putchar(char c)
+int	ft_putchar(char c)
 {
 	write(1, &c, 1);
 	return (1);

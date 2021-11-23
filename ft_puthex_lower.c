@@ -6,7 +6,7 @@
 /*   By: kid-bouh <kid-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 21:42:17 by kid-bouh          #+#    #+#             */
-/*   Updated: 2021/11/22 21:49:46 by kid-bouh         ###   ########.fr       */
+/*   Updated: 2021/11/23 18:45:12 by kid-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 void	ft_puthex_lower(unsigned int nb, int *count)
 {
-	char *hex;
+	char	*hex;
 	char	c;
 
 	hex = "0123456789abcdef";
 	if (nb < 16)
 	{
 		c = hex[nb];
-		ft_putchar(c);
+		write(1, &c, 1);
 		*count += 1;
 	}
-	if (nb > 16)
+	else
 	{
 		ft_puthex_lower(nb / 16, count);
 		ft_puthex_lower(nb % 16, count);
 	}
-	
 }

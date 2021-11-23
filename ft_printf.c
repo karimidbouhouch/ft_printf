@@ -6,19 +6,20 @@
 /*   By: kid-bouh <kid-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:23:32 by kid-bouh          #+#    #+#             */
-/*   Updated: 2021/11/22 22:09:18 by kid-bouh         ###   ########.fr       */
+/*   Updated: 2021/11/23 21:02:37 by kid-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char ft_find(const char c)
+char	ft_find(const char c)
 {
-	int i;
-	char *v;
+	int		i;
+	char	*v;
 
 	i = 0;
 	v = "cspdiuxX%%";
+	
 	while (v[i])
 	{
 		if (c == v[i])
@@ -28,15 +29,15 @@ char ft_find(const char c)
 	return (0);
 }
 
-int ft_printf(const char *str, ...)
+int	ft_printf(const char *str, ...)
 {
-	int i;
-	int count;
+	int		i;
+	int		count;
+	va_list	format;
 
 	i = 0;
 	count = 0;
-	va_list valist;
-	va_start(valist, str);
+	va_start(format, str);
 	while (str[i])
 	{
 		if (str[i] != '%')
@@ -44,31 +45,28 @@ int ft_printf(const char *str, ...)
 		else if (str[i] == '%')
 		{
 			i++;
-			if (str[i] == 's')
-				count += ft_putstr(va_arg(valist, char *));
-			else if (str[i] == 'c')
-				count += ft_putchar(va_arg(valist, int));
-			else if (str[i] == 'd' || str[i] == 'i')
-				ft_putnbr(va_arg(valist, int), &count);
-			else if (str[i] == 'X')
-				ft_puthex_upper(va_arg(valist, int), &count);
-			else if (str[i] == 'x')
-				ft_puthex_lower(va_arg(valist, int), &count);
-			else if (str[i] == '%')
-				ft_putstr("%%");
+			if (ft_find(str[i]) == 's')
+				ft_putstr(va_arg(format, char *), &count);
+			else if (ft_find(str[i]) == 'c')
+				count += ft_putchar(va_arg(format, int));
+			else if (ft_find(str[i]) == 'd' || ft_find(str[i]) == 'i')
+				ft_putnbr(va_arg(format, int), &count);
+			else if (ft_find(str[i]) == 'X')
+				ft_puthex_upper(va_arg(format, unsigned int), &count);
+			else if (ft_find(str[i]) == 'x')
+				ft_puthex_lower(va_arg(format, unsigned int), &count);
+			else if (ft_find(str[i]) == 'u')
+				ft_putdec(va_arg(format, unsigned int), &count);
+			else if (ft_find(str[i]) == 'p')
+				ft_putadr(va_arg(format, unsigned long), &count);
+			else if (ft_find(str[i]) == '%')
+			{
+				count += 1;
+				write(1, "%%", 1);
+			}
 		}
 		i++;
 	}
-	va_end(valist);
+	va_end(format);
 	return (count);
-}
-
-int main()
-{
-	// char *s = "karim";
-	// char c = 'K';
-	// int i = ft_printf("%c-hello %s",c,s);
-	printf("%x\n", 123);
-	ft_printf("%x", 123);
-	//printf("%d",(-1337));
 }

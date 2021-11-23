@@ -6,19 +6,23 @@
 /*   By: kid-bouh <kid-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 12:49:29 by kid-bouh          #+#    #+#             */
-/*   Updated: 2021/11/22 18:25:10 by kid-bouh         ###   ########.fr       */
+/*   Updated: 2021/11/23 18:47:16 by kid-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int ft_putstr(char *str)
+void	ft_putstr(char *str, int *count)
 {
-	int i;
+	int	i;
 
 	i = 0;
+	if (!str)
+		str = "(null)";
 	while (str[i])
+	{
 		i++;
+		*count += 1;
+	}
 	write(1, str, i);
-	return(i);
 }
