@@ -6,27 +6,32 @@
 /*   By: kid-bouh <kid-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:23:32 by kid-bouh          #+#    #+#             */
-/*   Updated: 2021/11/23 21:02:37 by kid-bouh         ###   ########.fr       */
+/*   Updated: 2021/11/23 22:37:19 by kid-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	ft_find(const char c)
+static int	ft_percent(void)
 {
-	int		i;
-	char	*v;
+	write(1, "%%", 1);
+	return (1);
+}
 
-	i = 0;
-	v = "cspdiuxX%%";
-	
-	while (v[i])
-	{
-		if (c == v[i])
-			return (v[i]);
-		i++;
-	}
-	return (0);
+static void	ft_printf_2(char str, int *count, void *args)
+{
+	if (str == 's')
+		ft_putstr((char *)args, count);
+	else if (str == 'd' || str == 'i')
+		ft_putnbr((int)args, count);
+	else if (str == 'X')
+		ft_puthex_upper((unsigned int)args, count);
+	else if (str == 'x')
+		ft_puthex_lower((unsigned int)args, count);
+	else if (str == 'u')
+		ft_putdec((unsigned int)args, count);
+	else if (str == 'p')
+		ft_putadr((unsigned long)args, count);
 }
 
 int	ft_printf(const char *str, ...)
@@ -45,25 +50,12 @@ int	ft_printf(const char *str, ...)
 		else if (str[i] == '%')
 		{
 			i++;
-			if (ft_find(str[i]) == 's')
-				ft_putstr(va_arg(format, char *), &count);
-			else if (ft_find(str[i]) == 'c')
+			if (str[i] == 'c')
 				count += ft_putchar(va_arg(format, int));
-			else if (ft_find(str[i]) == 'd' || ft_find(str[i]) == 'i')
-				ft_putnbr(va_arg(format, int), &count);
-			else if (ft_find(str[i]) == 'X')
-				ft_puthex_upper(va_arg(format, unsigned int), &count);
-			else if (ft_find(str[i]) == 'x')
-				ft_puthex_lower(va_arg(format, unsigned int), &count);
-			else if (ft_find(str[i]) == 'u')
-				ft_putdec(va_arg(format, unsigned int), &count);
-			else if (ft_find(str[i]) == 'p')
-				ft_putadr(va_arg(format, unsigned long), &count);
-			else if (ft_find(str[i]) == '%')
-			{
-				count += 1;
-				write(1, "%%", 1);
-			}
+			else if (str[i] == '%')
+				count += ft_percent();
+			else
+				ft_printf_2(str[i], &count, va_arg(format, void *));
 		}
 		i++;
 	}
